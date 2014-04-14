@@ -4,8 +4,8 @@ namespace IgraalOSB\StatsTableBundle\EventListener;
 
 use IgraalOSB\StatsTable\Dumper;
 use IgraalOSB\StatsTableBundle\Configuration;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
@@ -13,11 +13,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class StatsTableListener implements EventSubscriberInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
     private $_types;
 
     protected function getTypes()
@@ -55,14 +50,6 @@ class StatsTableListener implements EventSubscriberInterface
     }
 
     /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
      * Sets the format
      * @param FilterControllerEvent $event
      */
@@ -78,7 +65,7 @@ class StatsTableListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$format = $request->attributes->get('_format')) {
+        if (!$format = $this->getFormatFromRequest($request)) {
             return;
         }
 
@@ -135,6 +122,30 @@ class StatsTableListener implements EventSubscriberInterface
         foreach ($formatConfiguration['headers'] as $name => $value) {
             $response->headers->set($name, $value);
         }
+    }
+
+    /**
+     * Retrieve format given URL
+     * @param  Request     $request
+     * @return null|string
+     */
+    protected function getFormatFromRequest(Request $request)
+    {
+        $format = $request->getRequestFormat(null);
+        if ($format) {
+            return $format;
+        }
+
+        // Guess given url
+        $requestUri = $request->server->get('REQUEST_URI');
+        $questionPos = strpos($requestUri, '?');
+        $path = $questionPos !== false ? substr($requestUri, 0, $questionPos) : $requestUri;
+
+        if (preg_match('@^.*\.(.*)$@', $path, $matchesExtension)) {
+            return $matchesExtension[1];
+        }
+
+        return null;
     }
 
     /**
