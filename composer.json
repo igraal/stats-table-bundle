@@ -1,0 +1,30 @@
+{
+    "name": "igraal/stats-table-bundle",
+    "description": "Symfony bundle to work with stats-table",
+    "homepage": "https://github.com/igraal/stats-table-bundle",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["PHP", "stats", "statistics", "excel", "csv", "json", "xls"],
+    "authors": [
+        {
+            "name": "iGraal",
+            "homepage": "http://www.igraal.com/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"": "lib"}
+    },
+    "suggest": {
+        "phpoffice/phpexcel": "Allow to export to Excel file. Add phpoffice/phpexcel *@stable"
+    },
+    "require-dev": {
+        "phpoffice/phpexcel": "*@stable",
+        "phpunit/phpunit": "3.7.*",
+        "phpmd/phpmd": "*@dev",
+        "squizlabs/php_codesniffer": "2.0.*@dev"
+    },
+    "require": {
+        "igraal/stats-table": "dev-master",
+        "sensio/framework-extra-bundle": ">=2.3, <3.0"
+    }
+}
