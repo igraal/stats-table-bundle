@@ -2,7 +2,7 @@
     "name": "igraal/stats-table-bundle",
     "description": "Symfony bundle to work with stats-table",
     "homepage": "https://github.com/igraal/stats-table-bundle",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "keywords": ["PHP", "stats", "statistics", "excel", "csv", "json", "xls"],
     "authors": [
@@ -12,7 +12,7 @@
         }
     ],
     "autoload": {
-        "psr-4": {"": "lib"}
+        "psr-4": {"": "src"}
     },
     "suggest": {
         "phpoffice/phpexcel": "Allow to export to Excel file. Add phpoffice/phpexcel *@stable"
