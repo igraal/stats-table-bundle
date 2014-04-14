@@ -1,6 +1,6 @@
 <?php
 
-namespace IgraalOSB\StatsTableBundle\Listener;
+namespace IgraalOSB\StatsTableBundle\EventListener;
 
 use IgraalOSB\StatsTable\Dumper;
 use IgraalOSB\StatsTableBundle\Configuration;
