@@ -4,9 +4,11 @@ namespace IgraalOSB\StatsTableBundle\EventListener;
 
 use IgraalOSB\StatsTable\Dumper;
 use IgraalOSB\StatsTableBundle\Configuration;
+use IgraalOSB\StatsTableBundle\Response\StatsTableResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -31,20 +33,14 @@ class StatsTableListener implements EventSubscriberInterface
                 array(
                     'formats' => array('xls'),
                     'class'   => 'IgraalOSL\StatsTable\Dumper\Excel\ExcelDumper',
-                    'mime'    => 'application/vnd.ms-office; charset=binary',
-                    'headers' => array('Content-Disposition' => 'attachment'),
                 ),
                 array(
                     'formats' => array('csv'),
                     'class'   => 'IgraalOSL\StatsTable\Dumper\CSV\CSVDumper',
-                    'mime'    => 'text/csv; charset=utf-8',
-                    'headers' => array('Content-Disposition' => 'attachment'),
                 ),
                 array(
                     'formats' => array('json'),
                     'class'   => 'IgraalOSL\StatsTable\Dumper\JSON\JSONDumper',
-                    'mime'    => 'application/json',
-                    'headers' => array()
                 )
             );
     }
@@ -104,7 +100,7 @@ class StatsTableListener implements EventSubscriberInterface
 
         $statsTable = $event->getControllerResult();
         if (!$statsTable instanceof \IgraalOSL\StatsTable\StatsTable) {
-            throw new \RuntimeException('Response must be an instance of \\IgraalOSL\\StatsTable\\StatsTable');
+            throw new \RuntimeException('Controller result must be an instance of \\IgraalOSL\\StatsTable\\StatsTable');
         }
 
         $response = $event->getResponse();
@@ -115,13 +111,12 @@ class StatsTableListener implements EventSubscriberInterface
 
         /** @var \IgraalOSB\StatsTable\Dumper\DumperInterface $dumper */
         $dumper = new $formatConfiguration['class']();
-        $content = $dumper->dump($statsTable);
-        $response->setContent($content);
 
-        $response->headers->set('Content-type', $formatConfiguration['mime']);
-        foreach ($formatConfiguration['headers'] as $name => $value) {
-            $response->headers->set($name, $value);
-        }
+        $stResponse = new StatsTableResponse($statsTable, $dumper);
+        $response->headers->set('Content-type', $stResponse->headers->get('content-type'));
+        $response->setContent($stResponse->getContent());
+
+        unset($stResponse);
     }
 
     /**
