@@ -43,7 +43,7 @@ class StatsTableListenerKernelViewTest extends \PHPUnit_Framework_TestCase
     public function testJSONResponse()
     {
         $request = $this->getRequest(true, 'json');
-        $statsTable = new StatsTable(array('what' => 'else ?'));
+        $statsTable = new StatsTable(array(array('what' => 'else ?')));
         $event = $this->getGetResponseForControllerResultEvent($request, $statsTable);
 
         $this->listener->onKernelView($event);
@@ -55,7 +55,7 @@ class StatsTableListenerKernelViewTest extends \PHPUnit_Framework_TestCase
         $jsonArray = json_decode($response->getContent(), true);
         $this->assertInternalType('array', $jsonArray);
         $this->assertArrayHasKey('data', $jsonArray);
-        $this->assertEquals(array('what' => 'else ?'), $jsonArray['data']);
+        $this->assertEquals(array(array('what' => 'else ?')), $jsonArray['data']);
     }
 
     public function testJSONResponseWithExistingResponse()
@@ -63,7 +63,7 @@ class StatsTableListenerKernelViewTest extends \PHPUnit_Framework_TestCase
         $request = $this->getRequest(true, 'json');
         $response = new Response();
         $response->headers->set('X-Custom', 'value');
-        $statsTable = new StatsTable(array('what' => 'else ?'));
+        $statsTable = new StatsTable(array(array('what' => 'else ?')));
         $event = $this->getGetResponseForControllerResultEvent($request, $statsTable, $response);
 
         $this->listener->onKernelView($event);
