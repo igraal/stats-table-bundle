@@ -13,7 +13,5 @@ class IgraalOSBStatsTableExtension extends Extension
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-
-        $this->addClassesToCompile(array('IgraalOSB\\StatsTableBundle\\Configuration\\StatsTableResult'));
     }
 }
