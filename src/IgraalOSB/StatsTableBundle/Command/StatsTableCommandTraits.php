@@ -5,6 +5,7 @@ namespace IgraalOSB\StatsTableBundle\Command;
 use IgraalOSL\StatsTable\Dumper\CSV\CSVDumper;
 use IgraalOSL\StatsTable\Dumper\Excel\ExcelDumper;
 use IgraalOSL\StatsTable\Dumper\HTML\HTMLDumper;
+use IgraalOSL\StatsTable\Dumper\JSON\JSONDumper;
 use IgraalOSL\StatsTable\StatsTable;
 use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,11 +65,25 @@ trait StatsTableCommandTraits
         } else {
             $tableHelper = new TableHelper();
             $tableHelper->setHeaders($statsTable->getHeaders());
-            $tableHelper->setRows($statsTable->getData());
+            // Dump from CSV
+            $dumper = new CSVDumper();
+            $dumper->enableHeaders(false);
+            $dumper->enableAggregation(false);
+
+            $data = $dumper->dump($statsTable);
+            $fp = fopen('php://temp', 'rw');
+            fwrite($fp, $data);
+            fseek($fp, 0, SEEK_SET);
+            while ($line = fgetcsv($fp)) {
+                $tableHelper->addRow($line);
+            }
+
             if ($statsTable->getAggregations()) {
                 $tableHelper->addRow($statsTable->getAggregations());
             }
             $tableHelper->render($output);
         }
     }
+
+    abstract protected function doExecute(InputInterface $input, OutputInterface $output);
 }
