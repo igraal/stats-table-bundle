@@ -24,8 +24,9 @@
         "squizlabs/php_codesniffer": "2.0.*@dev",
         "symfony/console": "~2.3",
         "twig/twig": "~1.0"
-    },    "require": {
+    },
+    "require": {
         "igraal/stats-table": "dev-master",
-        "sensio/framework-extra-bundle": ">=2.3, <3.0"
+        "sensio/framework-extra-bundle": "~2.3|~3.0"
     }
 }
