@@ -65,11 +65,10 @@ class StatsTableResponseTest extends \PHPUnit_Framework_TestCase
      */
     protected function getStatsTableMock()
     {
-        $statsTable = $this->getMock(
-            'IgraalOSL\StatsTable\StatsTable',
-            array(),
-            array(array())
-        );
+        $statsTable = $this
+            ->getMockBuilder(\IgraalOSL\StatsTable\StatsTable::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         return $statsTable;
     }
@@ -79,7 +78,9 @@ class StatsTableResponseTest extends \PHPUnit_Framework_TestCase
      */
     protected function getDumperInterfaceMock()
     {
-        $dumper = $this->getMock('IgraalOSL\StatsTable\Dumper\DumperInterface');
+        $dumper = $this
+            ->getMockBuilder(\IgraalOSL\StatsTable\Dumper\DumperInterface::class)
+            ->getMockForAbstractClass();
 
         $dumper
             ->expects($this->any())

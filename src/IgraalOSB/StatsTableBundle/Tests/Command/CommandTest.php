@@ -77,6 +77,6 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
         $command->run($input, $output);
         $contents = $output->fetch();
-        $this->assertContains('<table>', $contents);
+        $this->assertContains('<table', $contents);
     }
 }
