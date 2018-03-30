@@ -29,12 +29,17 @@ class StatsTableListenerTest extends \PHPUnit_Framework_TestCase
      */
     private $statsTableListener;
 
+    /**
+     * @var FilterControllerEvent
+     */
+    private $event;
+
     public function setUp()
     {
         $this->listener = new ControllerListener(new AnnotationReader());
         $this->statsTableListener = new StatsTableListener();
 
-        new StatsTableResult(array());
+        new StatsTableResult([]);
     }
 
     public function tearDown()
@@ -68,7 +73,7 @@ class StatsTableListenerTest extends \PHPUnit_Framework_TestCase
     {
         $controller = new FooController();
 
-        $this->event = $this->getFilterControllerEvent(array($controller, 'barAction'), $this->request);
+        $this->event = $this->getFilterControllerEvent([$controller, 'barAction'], $this->request);
         $this->listener->onKernelController($this->event);
         $this->statsTableListener->onKernelController($this->event);
 

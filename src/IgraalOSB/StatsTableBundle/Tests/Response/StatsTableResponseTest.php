@@ -40,14 +40,14 @@ class StatsTableResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testAdditionalHeader()
     {
-        $response = $this->getResponse(array('X-Custom' => 'customValue'));
+        $response = $this->getResponse(['X-Custom' => 'customValue']);
         $this->assertEquals('customValue', $response->headers->get('X-Custom'));
     }
 
     public function testOverrideHeader()
     {
         $contentType = 'application/octet-stream; charset=custom';
-        $response = $this->getResponse(array('Content-type' => $contentType));
+        $response = $this->getResponse(['Content-type' => $contentType]);
         $this->assertEquals($contentType, $response->headers->get('Content-type'));
     }
 
@@ -55,7 +55,7 @@ class StatsTableResponseTest extends \PHPUnit_Framework_TestCase
      * @param  array              $headers
      * @return StatsTableResponse
      */
-    public function getResponse(array $headers = array())
+    public function getResponse(array $headers = [])
     {
         return new StatsTableResponse($this->statsTable, $this->dumper, $headers);
     }

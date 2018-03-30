@@ -16,7 +16,7 @@ class StatsTableResponse extends Response
     /** @var DumperInterface */
     private $dumper;
 
-    public function __construct(StatsTable $statsTable, DumperInterface $dumper, $headers = array())
+    public function __construct(StatsTable $statsTable, DumperInterface $dumper, $headers = [])
     {
         parent::__construct('', 200, $headers);
 

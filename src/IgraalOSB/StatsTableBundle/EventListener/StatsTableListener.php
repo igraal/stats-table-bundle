@@ -27,22 +27,20 @@ class StatsTableListener implements EventSubscriberInterface
 
     protected function initTypes()
     {
-        $this->_types
-            =
-            array(
-                array(
-                    'formats' => array('xls'),
-                    'class'   => 'IgraalOSL\StatsTable\Dumper\Excel\ExcelDumper',
-                ),
-                array(
-                    'formats' => array('csv'),
-                    'class'   => 'IgraalOSL\StatsTable\Dumper\CSV\CSVDumper',
-                ),
-                array(
-                    'formats' => array('json'),
-                    'class'   => 'IgraalOSL\StatsTable\Dumper\JSON\JSONDumper',
-                )
-            );
+        $this->_types = [
+            [
+                'formats' => ['xls'],
+                'class'   => 'IgraalOSL\StatsTable\Dumper\Excel\ExcelDumper',
+            ],
+            [
+                'formats' => ['csv'],
+                'class'   => 'IgraalOSL\StatsTable\Dumper\CSV\CSVDumper',
+            ],
+            [
+                'formats' => ['json'],
+                'class'   => 'IgraalOSL\StatsTable\Dumper\JSON\JSONDumper',
+            ]
+        ];
     }
 
     /**
@@ -86,7 +84,7 @@ class StatsTableListener implements EventSubscriberInterface
 
         $types = $this->getTypes();
         $format = $configuration->getFormat();
-        $formatConfiguration = array();
+        $formatConfiguration = [];
         foreach ($types as $type) {
             if (in_array($format, $type['formats'])) {
                 $formatConfiguration = $type;
@@ -148,9 +146,9 @@ class StatsTableListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::CONTROLLER => array('onKernelController', -128),
+        return [
+            KernelEvents::CONTROLLER => ['onKernelController', -128],
             KernelEvents::VIEW => 'onKernelView',
-        );
+        ];
     }
 }
