@@ -20,6 +20,6 @@ class TraitTestCommand extends Command
 
     protected function doExecute()
     {
-        return new StatsTable(array(array(0, 1)), array('Zero', 'One'));
+        return new StatsTable([[0, 1]], ['Zero', 'One']);
     }
 }

@@ -111,7 +111,9 @@ class StatsTableListenerKernelViewTest extends \PHPUnit_Framework_TestCase
      */
     protected function getGetResponseForControllerResultEvent(Request $request, $controllerResult = null, Response $response = null)
     {
-        $kernelInterface = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        $kernelInterface = $this
+            ->getMockBuilder(\Symfony\Component\HttpKernel\HttpKernelInterface::class)
+            ->getMockForAbstractClass();
 
         $event = new GetResponseForControllerResultEvent($kernelInterface, $request, HttpKernelInterface::MASTER_REQUEST, $controllerResult);
         if (null !== $response) {

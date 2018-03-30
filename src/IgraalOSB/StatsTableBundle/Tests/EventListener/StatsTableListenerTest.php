@@ -29,12 +29,17 @@ class StatsTableListenerTest extends \PHPUnit_Framework_TestCase
      */
     private $statsTableListener;
 
+    /**
+     * @var FilterControllerEvent
+     */
+    private $event;
+
     public function setUp()
     {
         $this->listener = new ControllerListener(new AnnotationReader());
         $this->statsTableListener = new StatsTableListener();
 
-        new StatsTableResult(array());
+        new StatsTableResult([]);
     }
 
     public function tearDown()
@@ -43,6 +48,9 @@ class StatsTableListenerTest extends \PHPUnit_Framework_TestCase
         $this->request  = null;
     }
 
+    /**
+     * @group debug
+     */
     public function testAnnotationGetsFormat()
     {
         $this->request = $this->createRequest('json', null);
@@ -65,7 +73,7 @@ class StatsTableListenerTest extends \PHPUnit_Framework_TestCase
     {
         $controller = new FooController();
 
-        $this->event = $this->getFilterControllerEvent(array($controller, 'barAction'), $this->request);
+        $this->event = $this->getFilterControllerEvent([$controller, 'barAction'], $this->request);
         $this->listener->onKernelController($this->event);
         $this->statsTableListener->onKernelController($this->event);
 
@@ -75,18 +83,27 @@ class StatsTableListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function getFilterControllerEvent($controller, Request $request)
     {
-        $mockKernel = $this->getMockForAbstractClass('Symfony\Component\HttpKernel\Kernel', array('', ''));
+        /* @var \Symfony\Component\HttpKernel\Kernel $mockKernel */
+        $mockKernel = $this
+            ->getMockBuilder(\Symfony\Component\HttpKernel\Kernel::class)
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
 
         return new FilterControllerEvent($mockKernel, $controller, $request, HttpKernelInterface::MASTER_REQUEST);
     }
 
     protected function createRequest($format = null, $requestUri = null)
     {
-        return Request::create($requestUri, 'GET', array(
+        $request = Request::create($requestUri, 'GET', array(
                 '_statstable' => null,
                 '_format' => $format
             )
         );
+
+        $request->attributes->set('_statstable', null);
+        $request->attributes->set('_format', $format);
+
+        return $request;
     }
 
     protected function getReadedStatsTable()

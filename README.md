@@ -33,10 +33,10 @@ Also add `phpoffice/phpexcel` for .xls file support.
 Edit your `AppKernel.php` file to add the bundle :
 
 ```php
-    $bundles = array(
+    $bundles = [
         ...,
         new IgraalOSB\StatsTableBundle\IgraalOSBStatsTableBundle(),
-    );
+    ];
 ```
 
 ## Usage
@@ -59,10 +59,9 @@ class MyController extends BaseController
     public function statsTableTestAction()
     {
         return new \IgraalOSL\StatsTable\StatsTable(
-            array(array(1, 1), array(2, 3)),
-            array('One', 'Two')
+            [[1, 1], [2, 3]],
+            ['One', 'Two']
         );
     }
 }
 ```
-

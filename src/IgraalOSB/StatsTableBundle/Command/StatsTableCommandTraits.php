@@ -33,21 +33,21 @@ trait StatsTableCommandTraits
 
         $dumper = null;
         if ($filename = $input->getOption('xls')) {
-            $excelDumperOptions = array();
+            $excelDumperOptions = [];
             if (method_exists($this, 'getExcelDumperOptions')) {
                 $excelDumperOptions = $this->getExcelDumperOptions();
             }
 
             $dumper = new ExcelDumper($excelDumperOptions);
         } elseif ($filename = $input->getOption('csv')) {
-            $csvDumperOptions = array();
+            $csvDumperOptions = [];
             if (method_exists($this, 'getCSVDumperOptions')) {
                 $csvDumperOptions = $this->getCSVDumperOptions();
             }
 
             $dumper = new CSVDumper($csvDumperOptions);
         } elseif ($filename = $input->getOption('html')) {
-            $htmlDumperOptions = array();
+            $htmlDumperOptions = [];
             if (method_exists($this, 'getHTMLDumperOptions')) {
                 $htmlDumperOptions = $this->getHTMLDumperOptions();
             }

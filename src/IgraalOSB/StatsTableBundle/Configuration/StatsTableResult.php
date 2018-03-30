@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
 class StatsTableResult extends ConfigurationAnnotation
 {
     private $_format;
-    private $_options = array();
+    private $_options = [];
 
     public function __construct($options)
     {

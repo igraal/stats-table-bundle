@@ -1,15 +1,18 @@
 language: php
 
-matrix:
-    include:
-        - php: 5.3
-          env: PHPUNIT_GROUPS="--exclude-group trait"
-        - php: 5.4
-        - php: 5.5
-        - php: 5.6
-        - php: hhvm
+php:
+    - 5.6
+    - 7.0
+    - 7.1
+    - 7.2
+
+env:
+    - SFEB=^2.3
+    - SFEB=^3.0
+    - SFEB=^4.0
+    - SFEB=^5.0
 
 install:
-    - composer install --dev
+    - composer require sensio/framework-extra-bundle:${SFEB}
 
-script: ./vendor/bin/phpunit $PHPUNIT_GROUPS
+script: ./vendor/bin/phpunit
